@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="GET" action="{{ url_for('home') }}">
+  <input type="text" name="search" placeholder="Search...">
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
+<a href="{{ url_for('home', sort_by='title') }}">Sort by title</a>
+<a href="{{ url_for('home', sort_by='author') }}">Sort by author's name</a>
+
+<div class="row">
+  {% for book in books %}
+  <div class="col-md-4">
+    <div class="card mb-4">
+      <img class="card-img-top" src="{{ book.cover_image_url }}" alt="{{ book.title }} cover" data-toggle="popover" data-content="{{ book.plot }}">
+      <div class="card-body">
+        <h5 class="card-title">{{ book.title }}</h5>
+        <p class="card-text">By {{ book.author.name }}</p>
+        <form method="POST" action="{{ url_for('delete_book', book_id=book.id) }}">
+          <button type="submit" class="btn btn-danger">Delete Book</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
